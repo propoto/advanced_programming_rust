@@ -9,6 +9,8 @@
       <sourceFolder url="file://$MODULE_DIR$/ownership/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/sheet_1/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/variables/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/assignment_1/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/assignment_2/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/branches/target" />
       <excludeFolder url="file://$MODULE_DIR$/control_flow/target" />
       <excludeFolder url="file://$MODULE_DIR$/functions/target" />
@@ -16,6 +18,8 @@
       <excludeFolder url="file://$MODULE_DIR$/ownership/target" />
       <excludeFolder url="file://$MODULE_DIR$/sheet_1/target" />
       <excludeFolder url="file://$MODULE_DIR$/variables/target" />
+      <excludeFolder url="file://$MODULE_DIR$/assignment_1/target" />
+      <excludeFolder url="file://$MODULE_DIR$/assignment_2/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
