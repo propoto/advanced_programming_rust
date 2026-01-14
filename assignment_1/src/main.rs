@@ -17,7 +17,10 @@ fn main() {
     println!("Energia = {}", e_equals_mc_sqaured(m));
 
     let v = vec![3,1,5,6,12,543,0];
-    println!("Maggiore = {}. Minore = {} ",max_min(&v).0, max_min(&v).1)
+    println!("Maggiore = {}. Minore = {} ",max_min(&v).0, max_min(&v).1);
+
+    let string = String::from("pellicanessa");
+    println!("{} -> {}", string, lord_farquaad(&string))
 }
 
 //1
@@ -59,4 +62,16 @@ fn max_min(v:&Vec<i32>) -> (i32,i32){
     }
 
     (max_so_far,min_so_far)
+}
+
+//6
+fn lord_farquaad(string: &String) -> String{
+    let mut v:Vec<char> = string.chars().collect();
+    for c in v.iter_mut() {
+        if *c == 'e'{
+            *c = '💥';
+        }
+    }
+    let v:String = v.into_iter().collect();
+    v
 }
