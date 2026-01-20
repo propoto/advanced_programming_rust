@@ -3,6 +3,8 @@ use std::fmt::{write, Debug, Display, Formatter};
 use std::iter::Enumerate;
 use crate::Coin::{Euro1, Euro2, FiftyCents, TenCents, TwentyCents};
 use crate::Item::{Chocolate, Coffee, Coke, Muffin, Tea};
+use crate::sentence::Sentence;
+use crate::test_sentence::magic_sentence;
 
 //2
 enum Fuel {
@@ -72,21 +74,21 @@ impl VendingMachine{
 
     fn insert_coin(&mut self, coin: Coin)-> Result<&'static str,&'static str>{
         match coin {
-            Coin::FiftyCents => {self.coins += FiftyCents.to_cents();Ok("Monete inserite")}
-            Coin::TwentyCents => {self.coins += TwentyCents.to_cents();Ok("Monete inserite")}
-            Coin::TenCents => {self.coins += TenCents.to_cents();Ok("Monete inserite")}
-            Coin::Euro1 => {self.coins += Euro1.to_cents();Ok("Monete inserite")}
-            Coin::Euro2 => {self.coins += Euro2.to_cents();Ok("Monete inserite")}
+            FiftyCents => {self.coins += FiftyCents.to_cents();Ok("Monete inserite")}
+            TwentyCents => {self.coins += TwentyCents.to_cents();Ok("Monete inserite")}
+            TenCents => {self.coins += TenCents.to_cents();Ok("Monete inserite")}
+            Euro1 => {self.coins += Euro1.to_cents();Ok("Monete inserite")}
+            Euro2 => {self.coins += Euro2.to_cents();Ok("Monete inserite")}
         }
     }
 
     fn get_item_price(&self, item: &Item)-> usize{
         match item {
-            Item::Coke => {60}
-            Item::Coffee => {45}
-            Item::Tea => {50}
-            Item::Chocolate => {60}
-            Item::Muffin => {120}
+            Coke => {60}
+            Coffee => {45}
+            Tea => {50}
+            Chocolate => {60}
+             Muffin => {120}
         }
     }
 
@@ -182,6 +184,222 @@ impl Display for BoxShipping{
         ,self.name,self.barcode,self.shipment_date,self.shipment_hour)
     }
 }
+
+enum Month{
+    January,
+    February,
+    March,
+    April,
+    May,
+    June,
+    July,
+    August,
+    September,
+    October,
+    November,
+    December
+}
+enum Product{
+    Book(String,String),
+    Article(String),
+    Magazine(usize,Month)
+
+}
+
+impl Product{
+    fn to_string(&self) -> String{
+        match self {
+            Product::Book(a, pb) => {
+                format!("Book. Author = {}, Publishing company = {}",a,pb)
+            }
+            Product::Article(o) => {
+                format!("Article. Orchid = {}",o)
+            }
+            Product::Magazine(n, m) => {
+                format!("Magazine. Number = {}, Month = {}",n,m)
+            }
+        }
+    }
+}
+
+struct Library{
+    shelf: Vec<Product>
+}
+impl Library {
+    fn new(vec:Vec<Product>) -> Library{
+        Library{
+            shelf : vec
+        }
+    }
+
+    fn add(&mut self,product: Product ){
+        self.shelf.push(product)
+    }
+}
+
+impl Display for Month{
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Month::January => {write!(f,"January")}
+            Month::February => {write!(f,"February")}
+            Month::March => {write!(f,"March")}
+            Month::April => {write!(f,"April")}
+            Month::May => {write!(f,"May")}
+            Month::June => {write!(f,"June")}
+            Month::July => {write!(f,"July")}
+            Month::August => {write!(f,"August")}
+            Month::September => {write!(f,"September")}
+            Month::October => {write!(f,"October")}
+            Month::November => {write!(f,"November")}
+            Month::December => {write!(f,"December")}
+        }
+    }
+}
+
+impl Display for Product{
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Product::Book(a, pb) => {
+                write!(f,"Book. Author = {}, Publishing company = {}.",a,pb)
+            }
+            Product::Article(o) => {
+                write!(f,"Article. Orchid = {}.",o)
+            }
+            Product::Magazine(n, m) => {
+                write!(f,"Magazine. Number = {}, Month = {}.",n,m)
+            }
+        }
+    }
+}
+
+impl Display for Library{
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let mut str = String::new();
+        for p in self.shelf.iter() {
+            str.push_str(p.to_string().as_str());
+            str.push_str("\n");
+        }
+        write!(f,"{}",str)
+    }
+}
+
+mod point {
+    pub struct Pointz{
+        pub x:f32,
+        pub y:f32
+    }
+    impl Pointz{
+        pub fn new(x:f32,y:f32)->Pointz{
+            Pointz{
+                x,
+                y
+            }
+        }
+        fn distance(&self, point: &Pointz) ->f32{
+            ((self.x -point.x).abs().powi(2) + (self.y -point.y).abs().powi(2)).sqrt()
+        }
+    }
+}
+
+mod line {
+    use crate::point;
+
+    pub struct Line{
+        start: point::Pointz,
+        end: point::Pointz,
+        m:f32,
+        q:f32
+    }
+    impl Line{
+        pub fn new(start: point::Pointz, end: point::Pointz) -> Line{
+            let m = (end.y - start.y)/(end.x - start.x);
+            let q = end.y - start.y - m * (end.x - start.x);
+            Line{ start, end, m, q }
+        }
+        pub fn contains(&self,p: &point::Pointz)-> Result<(),String>{
+            if self.m * p.x + self.q - p.y == 0.0{
+                return Ok(())
+            }
+            Err(String::from("Il punto non appartiene alla retta"))
+        }
+    }
+
+
+
+}
+
+mod test{
+    use crate::point;
+    use crate::line;
+    pub fn test(){
+        let start = point::Pointz::new(1.0,1.0);
+        let end = point::Pointz::new(3.3,3.0);
+        let point = point::Pointz::new(2.0,2.0);
+        let line = line::Line::new(start,end);
+
+        match line.contains(&point) {
+            Ok(_) => println!("La linea contiene il punto"),
+            Err(s) => println!("{}",s),
+        }
+    }
+}
+
+mod sentence{
+    pub struct Sentence{
+        pub words: Vec<String>
+    }
+    impl Sentence {
+        pub fn new_default()->Self{
+            Sentence{
+                words: Vec::new()
+            }
+        }
+        pub fn new(&mut self, str: &str){
+            for s in str.split_whitespace(){
+                self.words.push(String::from(s))
+            }
+        }
+
+    }
+}
+
+impl Display for Sentence{
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let mut str = String::new();
+        for s in self.words.iter(){
+            str.push_str(s.as_str());
+            str.push(' ');
+        }
+        write!(f,"{}",str)
+    }
+}
+
+mod test_sentence{
+    use std::collections::HashMap;
+    use crate::sentence::Sentence;
+
+    pub fn magic_sentence(hash_map: &HashMap<i32,Sentence>,i: i32, j:i32) -> Result<Sentence,&str>{
+        if hash_map.contains_key(&i) && hash_map.contains_key(&j) {
+            let s1 = hash_map.get(&i).unwrap();
+            let s2 = hash_map.get(&j).unwrap();
+            let mut str = String::new();
+
+            for (i,s) in s1.words.iter().enumerate(){
+                if *s == s2.words[i] {
+                    str.push_str(&*s);
+                    str.push(' ');
+                }
+            }
+            let mut sentence = Sentence::new_default();
+            sentence.new(str.as_str());
+            if sentence.words.is_empty() {
+                return Err("Nessuna parola in comune trovata")
+            }
+            return Ok(sentence)
+        }
+        Err("Indici non esistenti nell'hash map.")
+    }
+}
 fn main() {
 
     let string = String::from("245719");
@@ -229,6 +447,36 @@ fn main() {
         shipment_date:date,
         shipment_hour:hour};
     println!("{}",boxshipping);
+
+    let mut vec:Vec<Product> = Vec::new();
+    vec.push(Product::Book(String::from("Paul Walker"),String::from("Annapurna")));
+    vec.push(Product::Article(String::from("Dark")));
+    vec.push(Product::Magazine(12,Month::April));
+    let mut library = Library::new(vec);
+    let new_product = Product::Article(String::from("Comedy"));
+    library.add(new_product);
+    println!("{}",library);
+    test::test();
+
+
+    let str = "Ciao mi chiamo Gino ed ho 15 anni";
+    let str2 =  "ds Ciao mi chiamo Paolo ed ho 23 anni";
+    let mut sentence:Sentence = Sentence::new_default();
+    let mut sentence2:Sentence = Sentence::new_default();
+    sentence.new(str);
+    sentence2.new(str2);
+    let mut hash_map:HashMap<i32,Sentence> = HashMap::new();
+    hash_map.insert(0,sentence);
+    hash_map.insert(2,sentence2);
+
+    match magic_sentence(&hash_map,0,1) {
+        Ok(s) => {
+            println!("{}",s)
+        }
+        Err(e) => {
+            println!("{}",e)
+        }
+    }
 }
 
 //1
